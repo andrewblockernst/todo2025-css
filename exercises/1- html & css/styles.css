@@ -5,10 +5,13 @@
   --dark-wood: #3c2415;
   --medium-wood: #5a3921;
   --light-wood: #8b5a2b;
+  --red-head: #8e1f1f;
+  --dark-red: #4b0d0d;
   --gold: #d4af37;
   --cream: #f5f5dc;
   --guinness: #1b1b1b;
-  --shamrock: #169b62;
+  --shamrock: #0c6d43;
+  --shamrock-light: #05bb72;
 }
 
 * {
@@ -198,7 +201,7 @@ ul {
 }
 
 .btn-complete {
-  background-color: var(--guinness);
+  background-color: var(--shamrock);
   color: var(--cream);
   border: 1px solid var(--gold);
   padding: 8px 12px;
@@ -209,7 +212,7 @@ ul {
 }
 
 .btn-complete:hover {
-  background-color: var(--gold);
+  background-color: var(--shamrock-light  );
   color: var(--guinness);
 }
 
@@ -220,6 +223,27 @@ footer {
   border-top: 3px solid var(--gold);
   color: var(--cream);
   font-size: 0.9rem;
+}
+
+.task-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-cancel {
+  background-color: var(--dark-red);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: serif;
+  transition: all 0.3s;
+}
+
+.btn-cancel:hover {
+  background-color: var(--red-head);
+  color: var(--guinness);
 }
 
 /* AJUSTES PARA EL RESPONSIVE */
