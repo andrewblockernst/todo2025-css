@@ -1,6 +1,6 @@
 /* ESTILOS DE THE OLD STAND | TO DO */
 
-/* VARIABLES DE COLORES PARA DESPUES APLICARLAS */
+/* VARIABLES DE COLORES */
 :root {
   --dark-wood: #3c2415;
   --medium-wood: #5a3921;
@@ -68,10 +68,6 @@ h3 {
   padding-bottom: 10px;
 }
 
-.pub-image {
-  margin: 20px 0;
-}
-
 .pub-image img {
   width: 100%;
   max-height: 300px;
@@ -136,19 +132,19 @@ input[type="text"] {
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
-  gap: 160px;
+  gap: 25px;
 }
 
 .tab-button {
   background-color: var(--medium-wood);
   color: var(--cream);
   border: 1px solid var(--gold);
-  padding: 10px 20px;
+  padding: 10px 10px;
   cursor: pointer;
   font-family: serif;
   font-size: 1rem;
   transition: background-color 0.3s;
-  margin: 0 5px;
+  margin: 0 0;
   border-radius: 4px;
 }
 
@@ -169,6 +165,19 @@ input[type="text"] {
   border: 2px solid var(--gold);
 }
 
+.btn-add-tab {
+  font-weight: bold;
+  background-color: var(--shamrock);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: serif;
+  transition: all 0.3s;
+}
+
+/* SI SACO ESTA PROPIEDAD, NO PODRIA VER EL CONTENIDO DE CADA TAB */
 .tab-content.active {
   display: block;
 }
@@ -200,36 +209,6 @@ ul {
   color: var(--cream);
 }
 
-.btn-complete {
-  background-color: var(--shamrock);
-  color: var(--cream);
-  border: 1px solid var(--gold);
-  padding: 8px 12px;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: serif;
-  transition: all 0.3s;
-}
-
-.btn-complete:hover {
-  background-color: var(--shamrock-light  );
-  color: var(--guinness);
-}
-
-footer {
-  text-align: center;
-  margin-top: 30px;
-  padding-top: 20px;
-  border-top: 3px solid var(--gold);
-  color: var(--cream);
-  font-size: 0.9rem;
-}
-
-.task-buttons {
-  display: flex;
-  gap: 10px;
-}
-
 .btn-cancel {
   background-color: var(--dark-red);
   color: var(--cream);
@@ -246,6 +225,97 @@ footer {
   color: var(--guinness);
 }
 
+.btn-complete {
+  background-color: var(--shamrock);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: serif;
+  transition: all 0.3s;
+}
+
+.btn-complete:hover {
+  background-color: var(--shamrock-light);
+  color: var(--guinness);
+}
+
+.task-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+/* Estilos para los controles de tareas */
+.task-controls {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn-clear-completed {
+  background-color: var(--dark-red);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  padding: 10px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: serif;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.btn-clear-completed:hover {
+  background-color: var(--red-head);
+  color: var(--guinness);
+}
+
+.filter-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.btn-filter {
+  background-color: var(--medium-wood);
+  color: var(--cream);
+  border: 1px solid var(--gold);
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: serif;
+  font-size: 0.9rem;
+  transition: all 0.3s;
+}
+
+.btn-filter:hover {
+  background-color: var(--dark-wood);
+}
+
+.btn-filter.active {
+  background-color: var(--gold);
+  color: var(--guinness);
+}
+
+/* Estilo para tareas completadas */
+.task-item.completed .task-text {
+  text-decoration: line-through;
+  color: var(--light-wood);
+}
+
+
+
+footer {
+  text-align: center;
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 3px solid var(--gold);
+  color: var(--cream);
+  font-size: 0.9rem;
+}
+
 /* AJUSTES PARA EL RESPONSIVE */
 @media (max-width: 600px) {
   .container {
@@ -260,14 +330,7 @@ footer {
   h2 {
     font-size: 1.2rem;
   }
-
-  .task-item {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .btn-complete {
-    margin-top: 10px;
-    align-self: flex-end;
-  }
 }
+  
+
+  
