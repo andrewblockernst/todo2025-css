@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import { state } from '../state.js';
+import { state } from '../state';
 
 let errorMessage = '';
 
@@ -55,7 +55,7 @@ if (Astro.request.method === 'POST') {
     }
     else if (action === 'change-filter') {
       const filter = formData.get('filter')?.toString() || 'all';
-      state.filter = filter;
+      state.filter = filter as 'all' | 'complete' | 'incomplete';
     }
     else if (action === 'change-tab') {
       const tab = formData.get('tab')?.toString() || 'today';
@@ -78,7 +78,7 @@ if (Astro.request.method === 'POST') {
   }
 }
 
-function getFilteredTasks(tab) {
+function getFilteredTasks(tab: string) {
   if (!state.tasks[tab]) return [];
   const tasks = state.tasks[tab];
   if (state.filter === 'complete') {
@@ -167,7 +167,7 @@ const activeTab = state.activeTab;
           <!--BOTON AÑADIR PESTAÑA-->
           <form method="POST" action="/" id="add-tab-form" class="inline-block relative">
             <input type="hidden" name="action" value="add-tab" />
-            <div class="add-tab-input-group hidden absolute top-0 left-0 whitespace-nowrap z-10">
+            <div class="add-tab-input-group absolute top-0 left-0 whitespace-nowrap z-10" style="display: none;">
               <input 
                 type="text" 
                 name="newTabName" 
@@ -317,26 +317,36 @@ const activeTab = state.activeTab;
   <script>
     // Script para manejar la visibilidad del input para nueva pestaña
     document.addEventListener('DOMContentLoaded', () => {
-      const showTabInput = document.getElementById('show-tab-input');
-      const addTabInputGroup = document.querySelector('.add-tab-input-group');
+      const showTabInput = document.getElementById('show-tab-input') as HTMLButtonElement | null;
+      const addTabInputGroup = document.querySelector('.add-tab-input-group') as HTMLElement | null;
       
-      showTabInput.addEventListener('click', () => {
-        // Mostrar el grupo de inputs y ocultar el botón +
-        addTabInputGroup.style.display = 'inline-block';
-        showTabInput.style.display = 'none';
-        
-        // Enfocar el input
-        document.getElementById('new-tab-input').focus();
-        
-        // Agregar un manejador para cancelar si se hace clic fuera
-        document.addEventListener('click', function closeTabInput(event) {
-          if (!addTabInputGroup.contains(event.target) && event.target !== showTabInput) {
-            addTabInputGroup.style.display = 'none';
-            showTabInput.style.display = 'inline-block';
-            document.removeEventListener('click', closeTabInput);
+      if (showTabInput && addTabInputGroup) {
+        showTabInput.addEventListener('click', () => {
+          // Mostrar el grupo de inputs y ocultar el botón +
+          addTabInputGroup.style.display = 'inline-block';
+          showTabInput.style.display = 'none';
+          
+          // Enfocar el input
+          const newTabInput = document.getElementById('new-tab-input') as HTMLInputElement | null;
+          if (newTabInput) {
+            newTabInput.focus();
           }
+          
+          // Agregar un manejador para cancelar si se hace clic fuera
+          const closeTabInput = (event: MouseEvent) => {
+            // Ensure event.target is a Node before using contains
+            if (addTabInputGroup && !addTabInputGroup.contains(event.target as Node) && event.target !== showTabInput) {
+              addTabInputGroup.style.display = 'none';
+              showTabInput.style.display = 'inline-block';
+              document.removeEventListener('click', closeTabInput);
+            }
+          };
+          // Use setTimeout to add the listener after the current event bubbles up
+          setTimeout(() => {
+            document.addEventListener('click', closeTabInput);
+          }, 0);
         });
-      });
+      }
     });
   </script>
 </Layout>

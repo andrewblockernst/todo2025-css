@@ -13,6 +13,6 @@ import "../styles/global.css";
     </head>
     <body class="bg-[url('/img/wood-pattern.png')]">
         <slot />
-        <script is:inline src="/scripts/enhance.js"></script>
+        <script>import "../scripts/enhance"</script> <!--LINEA QUE SE SACA PARA QUE EL SSR SE ACTIVE Y NO FUNCIONE EL .ts-->
     </body>
 </html>
