@@ -1,35 +1,62 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import Header from "./components/Header";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
+import TabList from "./components/TabList";
+import FilterButtons from "./components/FilterButtons";
+import useTasks from "./hooks/useTasks";
+import useTabs from "./hooks/useTabs";
+import useFilters from "./hooks/useFilters";
+import Footer from "./components/Footer";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { tasks, loading: tasksLoading, error: tasksError, fetchTasks, addTask, toggleComplete, deleteTask, clearCompleted } = useTasks();
+  const { tabs, activeTab, loading: tabsLoading, error: tabsError, setActiveTab, addTab } = useTabs();
+  const { filter, loading: filterLoading, error: filterError, setFilter, filterTasks } = useFilters();
+
+  useEffect(() => {
+    if (activeTab) {
+      fetchTasks(activeTab);
+    }
+  }, [activeTab, fetchTasks]);
+
+  if (tasksLoading || tabsLoading || filterLoading) {
+    return <div className="min-h-screen flex items-center justify-center">Cargando...</div>;
+  }
+
+  if (tasksError || tabsError || filterError) {
+    return <div className="min-h-screen flex items-center justify-center text-red-600">
+      Error: {tasksError || tabsError || filterError}
+    </div>;
+  }
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="min-h-screen bg-[url('/img/wood-pattern.png')] flex flex-col">
+      <div className="flex-1 max-w-4xl mx-auto py-2 w-full">
+        <div className="bg-orange-950 border-4 border-amber-200 rounded-lg overflow-hidden">
+          <Header />
+          <TaskForm onAddTask={(text) => addTask(text, activeTab)} />
+          <TabList
+            tabs={tabs}
+            activeTab={activeTab}
+            onChangeTab={setActiveTab}
+            onAddTab={addTab}
+          />
+          <TaskList
+            tasks={filterTasks(tasks[activeTab] || [])}
+            onToggleComplete={(id) => toggleComplete(id, activeTab)}
+            onDeleteTask={(id) => deleteTask(id, activeTab)}
+          />
+          <FilterButtons
+            filter={filter}
+            onChangeFilter={setFilter}
+            onClearCompleted={() => clearCompleted(activeTab)}
+          />
+          <Footer/> 
+        </div>
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    </div>
+  );
 }
 
-export default App
+export default App;
