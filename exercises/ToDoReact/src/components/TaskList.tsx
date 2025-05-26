@@ -1,52 +1,100 @@
-import React from 'react';
-import TaskItem from './TaskItem';
-import type { Task } from '../hooks/useTasks';
+import React, { useRef, useState, useEffect } from "react";
+import TaskItem from "./TaskItem";
+import LoadingSpinner from "./LoadingSpinner";
+import ErrorMessage from "./ErrorMessage";
+import { useTasks } from "../hooks/useTasks";
+import { ChevronsDown } from "lucide-react";
 
-interface TaskListProps {
-  tasks: Task[];
-  onToggleComplete: (id: number) => void;
-  onDeleteTask: (id: number) => void;
-}
+const TaskList: React.FC = () => {
+  const { data, isLoading, error } = useTasks();
+  const [showScrollButton, setShowScrollButton] = useState(false);
+  const listRef = useRef<HTMLUListElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onToggleComplete, onDeleteTask }) => {
-  if (tasks.length === 0) {
+  useEffect(() => {
+    const checkScrollable = () => {
+      if (listRef.current && containerRef.current) {
+        const listHeight = listRef.current.scrollHeight;
+        const containerHeight = containerRef.current.clientHeight;
+        const scrollTop = containerRef.current.scrollTop;
+
+        const hasHiddenContent =
+          listHeight > containerHeight &&
+          scrollTop < listHeight - containerHeight - 20;
+
+        setShowScrollButton(hasHiddenContent);
+      }
+    };
+
+    if (data?.tasks) {
+      setTimeout(checkScrollable, 100);
+    }
+
+    const container = containerRef.current;
+    if (container) {
+      container.addEventListener("scroll", checkScrollable);
+      return () => container.removeEventListener("scroll", checkScrollable);
+    }
+  }, [data?.tasks]);
+
+  const handleScrollToBottom = () => {
+    if (containerRef.current) {
+      containerRef.current.scrollTo({
+        top: containerRef.current.scrollHeight,
+        behavior: "smooth",
+      });
+    }
+  };
+
+  if (isLoading) {
     return (
-    <div className="p-8 text-center text-amber-200 bg-amber-950">
-      No tasks to display. Add a new task!
-    </div>
+      <div className="p-8 text-center text-amber-200 bg-amber-950">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (error) {
+    return <ErrorMessage error={error.message} />;
+  }
+
+  if (!data || data.tasks.length === 0) {
+    return (
+      <div className="p-10 text-center text-amber-200 bg-amber-950">
+        No tasks available yet :P
+      </div>
     );
   }
 
   return (
-    <ul className="space-y-2 mb-6 overflow-y-auto max-h-64 bg-amber-950">
-      {tasks.map(task => (
-        <li
-          key={task.id}
-          className="flex justify-between items-center p-3 bg-amber-950 rounded-lg task-item"
-          data-task-id={task.id}
-        >
-          <span className={`text-lg ${task.completed ? 'text-amber-300 line-through' : 'text-slate-100'}`}>
-            {task.text}
-          </span>
-          <div className="flex gap-2">
+    //TASK LIST CONTAINER WITH SCROLL
+    <div className="bg-amber-950 relative">
+      <div
+        ref={containerRef}
+        className="overflow-y-auto max-h-64 relative"
+        style={{ scrollBehavior: "smooth" }}
+      >
+        <ul ref={listRef} className="space-y-2 mb-6">
+          {data.tasks.map((task) => (
+            <TaskItem key={task.id} task={task} />
+          ))}
+        </ul>
+      </div>
+
+      {/*BUTTON MORE TASKS*/}
+      {showScrollButton && (
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-amber-950 via-amber-950/90 to-transparent pt-8 pb-4">
+          <div className="flex justify-center">
             <button
-              onClick={() => onDeleteTask(task.id)}
-              className="bg-red-900 hover:bg-red-600 text-slate-100 hover:text-amber-950 p-2 rounded border border-red-600 transition-colors"
-              aria-label="Eliminar tarea"
+              onClick={handleScrollToBottom}
+              className="bg-amber-700 hover:bg-amber-600 text-white px-2 py-2 rounded-lg shadow-lg transition-all duration-200 flex items-center gap-2 border border-amber-500"
             >
-              🛢️
-            </button>
-            <button
-              onClick={() => onToggleComplete(task.id)}
-              className="bg-green-900 hover:bg-green-600 text-slate-100 hover:text-amber-950 p-2 rounded border border-green-400 transition-colors"
-              aria-label="Completar tarea"
-            >
-              {task.completed ? '✅' : '🍺'}
+              <ChevronsDown />
             </button>
           </div>
-        </li>
-      ))}
-    </ul>
+        </div>
+      )}
+    </div>
   );
 };
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 interface TabItemProps {
   name: string;
@@ -12,10 +12,10 @@ const TabItem: React.FC<TabItemProps> = ({ name, isActive, onClick }) => {
       <button
         type="button"
         onClick={onClick}
-        className={`px-4 py-2 capitalize rounded-t ${
+        className={`px-4 py-2 capitalize rounded ${
           isActive
-            ? 'bg-dark-wood text-amber-200 font-medium'
-            : 'bg-medium-wood text-slate-100 hover:bg-amber-800'
+            ? "bg-amber-900 text-amber-200 font-medium"
+            : "text-slate-100 hover:bg-amber-800"
         }`}
       >
         {name}
