@@ -1,7 +1,8 @@
 import React, { useRef } from "react";
 import { useUpdateTask, useDeleteTask, type Task } from "../hooks/useTasks";
 import { useClientStore } from "../store/clientStore";
-import { SquarePen, Trash, } from "lucide-react";
+import { useConfigStore } from "../store/configStore";
+import { SquarePen, Trash } from "lucide-react";
 
 interface TaskItemProps {
   task: Task;
@@ -9,6 +10,7 @@ interface TaskItemProps {
 
 const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
   const { setEditingTask } = useClientStore();
+  const { config } = useConfigStore();
   const updateTaskMutation = useUpdateTask();
   const deleteTaskMutation = useDeleteTask();
   const dialogRef = useRef<HTMLDialogElement>(null);
@@ -70,7 +72,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
               task.completed ? "line-through text-amber-500" : "text-slate-100"
             }`}
           >
-            {task.text}
+            {config.uppercaseDescriptions ? task.text.toUpperCase() : task.text}
           </span>
         </div>
 
@@ -81,7 +83,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
             className="text-amber-300 hover:text-blue-400 transition-colors disabled:opacity-50"
             aria-label="Edit task"
           >
-            <SquarePen className='h-5 w-5 mt-0.5'/>
+            <SquarePen className="h-5 w-5 mt-0.5" />
           </button>
 
           <button
@@ -108,7 +110,6 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
             <div className="inline-flex items-center gap-2 bg-amber-800/30 px-4 py-2 rounded-full border border-amber-400">
               <span className="text-2xl">🍺</span>
               <h2 className="text-lg font-bold text-amber-200">hey mate!</h2>
-          
             </div>
           </div>
 

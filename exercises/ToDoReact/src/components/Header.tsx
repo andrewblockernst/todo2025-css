@@ -9,10 +9,10 @@ const Header: React.FC = () => {
             <h1 className="text-amber-200 text-3xl font-serif">The Old Stand</h1>
             <p className="text-slate-100 text-shadow italic mt-2"> Wanna check which tasks you have to do in the pub? Welcome mate, cause 
             this is the place. Cheers! 🍻</p>
-            <div className="mt-4">  
-              <img 
-                src="img/the-old-stand.jpg" 
-                alt="Irish Pub" 
+            <div className="mt-4">
+              <img
+                src="/img/the-old-stand.jpg"
+                alt="Irish Pub"
                 className="w-full h-48 object-cover rounded border-2 border-amber-200"
               />
             </div>

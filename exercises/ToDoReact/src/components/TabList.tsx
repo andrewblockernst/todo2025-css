@@ -1,23 +1,28 @@
 import React, { useState } from "react";
-import TabItem from "./TabItem";
+import { Link, useParams } from "@tanstack/react-router";
 import { useClientStore } from "../store/clientStore";
-import { useAddTab } from "../hooks/useTabs";
+import { useAddTab, useDeleteTab } from "../hooks/useTabs";
+import { Bolt } from "lucide-react";
 
 interface TabListProps {
   tabs: string[];
 }
 
 const TabList: React.FC<TabListProps> = ({ tabs }) => {
-  const { activeTab, setActiveTab, isAddingTab, setIsAddingTab } =
-    useClientStore();
+  const { tabId } = useParams({ from: "/tab/$tabId" }) || {
+    tabId: "today",
+  };
+  const { isAddingTab, setIsAddingTab } = useClientStore();
   const [newTabName, setNewTabName] = useState("");
   const addTabMutation = useAddTab();
+  const deleteTabMutation = useDeleteTab();
 
   const handleAddTab = (e: React.FormEvent) => {
     e.preventDefault();
 
     if (newTabName.trim()) {
-      addTabMutation.mutate(newTabName.trim(), {
+      const tabId = newTabName.trim().toLowerCase().replace(/\s+/g, "-");
+      addTabMutation.mutate(tabId, {
         onSuccess: () => {
           setNewTabName("");
           setIsAddingTab(false);
@@ -31,21 +36,53 @@ const TabList: React.FC<TabListProps> = ({ tabs }) => {
     setIsAddingTab(false);
   };
 
+  const handleDeleteTab = (tabName: string) => {
+    if (tabs.length <= 1) {
+      // Don't allow deleting the last tab
+      return;
+    }
+
+    if (
+      confirm(
+        `Are you sure you want to delete the "${tabName}" tab? This action cannot be undone.`
+      )
+    ) {
+      deleteTabMutation.mutate(tabName);
+    }
+  };
+
   return (
     <div className="border-t-2 border-b-2 border-amber-700 p-2">
       <div className="flex overflow-x-auto items-center gap-2">
         {/* Lista de pestañas existentes */}
         <ul className="flex space-x-1">
           {tabs.map((tab) => (
-            <TabItem
-              key={tab}
-              name={tab}
-              isActive={activeTab === tab}
-              onClick={(e) => {
-                e.preventDefault();
-                setActiveTab(tab);
-              }}
-            />
+            <li key={tab} className="flex items-center">
+              <Link
+                to="/tab/$tabId"
+                params={{ tabId: tab }}
+                className={`px-3 py-1 rounded text-sm font-bold border whitespace-nowrap flex items-center gap-2 ${
+                  tabId === tab
+                    ? "bg-amber-700 text-slate-100 border-amber-500"
+                    : "bg-amber-900 text-slate-100 border-amber-600 hover:bg-amber-800"
+                }`}
+              >
+                {tab}
+                {tabs.length > 1 && (
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleDeleteTab(tab);
+                    }}
+                    className="ml-1 text-red-300 hover:text-red-100 text-xs"
+                    title={`Delete ${tab} tab`}
+                  >
+                    ✕
+                  </button>
+                )}
+              </Link>
+            </li>
           ))}
         </ul>
 
@@ -87,6 +124,14 @@ const TabList: React.FC<TabListProps> = ({ tabs }) => {
             +
           </button>
         )}
+
+        {/* Settings Link */}
+        <Link
+          to="/settings"
+          className="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded text-sm font-medium whitespace-nowrap"
+        >
+          <Bolt/>
+        </Link>
       </div>
     </div>
   );

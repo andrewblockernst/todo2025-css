@@ -1,58 +1,53 @@
-// import React from "react";
-// import { useClientStore } from "../store/clientStore";
+import React from "react";
 
-// interface PaginationProps {
-//   currentPage: number;
-//   totalPages: number;
-//   total: number;
-// }
+interface PaginationProps {
+  currentPage: number;
+  totalPages: number;
+  total?: number;
+  onPageChange: (page: number) => void;
+}
 
-// const Pagination: React.FC<PaginationProps> = ({
-//   currentPage,
-//   totalPages,
-//   total,
-// }) => {
-//   const { setCurrentPage, itemsPerPage } = useClientStore();
+const Pagination: React.FC<PaginationProps> = ({
+  currentPage,
+  totalPages,
+  total,
+  onPageChange,
+}) => {
+  const itemsPerPage = 5; // Default items per page
+  const startItem = total ? (currentPage - 1) * itemsPerPage + 1 : 0;
+  const endItem = total ? Math.min(currentPage * itemsPerPage, total) : 0;
 
-//   const startItem = (currentPage - 1) * itemsPerPage + 1;
-//   const endItem = Math.min(currentPage * itemsPerPage, total);
+  return (
+    <div className="flex items-center justify-between p-4 bg-amber-900 border-t border-amber-700">
+      {total && (
+        <div className="text-amber-200 text-sm">
+          Showing {startItem}-{endItem} of {total} tasks
+        </div>
+      )}
 
-//   return (
-//     <div className="flex items-center justify-between p-4 bg-amber-900 border-t border-amber-700">
-//       <div className="text-amber-200 text-sm">
-//         Mostrando {startItem}-{endItem} de {total} tareas
-//       </div>
+      <div className="flex gap-2 ml-auto">
+        <button
+          onClick={() => onPageChange(currentPage - 1)}
+          disabled={currentPage <= 1}
+          className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
+        >
+          Previous
+        </button>
 
-//       <div className="flex gap-2">
-//         <button
-//           onClick={() => setCurrentPage(currentPage - 1)}
-//           disabled={currentPage <= 1}
-//           className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
-//         >
-//           Anterior
-//         </button>
+        <span className="px-3 py-1 bg-amber-600 text-white rounded">
+          {currentPage} of {totalPages}
+        </span>
 
-//         <span className="px-3 py-1 bg-amber-600 text-white rounded">
-//           {currentPage} de {totalPages}
-//         </span>
+        <button
+          onClick={() => onPageChange(currentPage + 1)}
+          disabled={currentPage >= totalPages}
+          className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
+        >
+          Next
+        </button>
+      </div>
+    </div>
+  );
+};
 
-//         <button
-//           onClick={() => setCurrentPage(currentPage + 1)}
-//           disabled={currentPage >= totalPages}
-//           className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
-//         >
-//           Siguiente
-//         </button>
-//       </div>
-//     </div>
-//   );
-// };
-
-// export default Pagination;
-
-
-
-
-//PENE
-
-//PREGUNTAR AL PROFE SI HACE FALTA MAS PAGINACION DE LA QUE YA TENGO CON EL BOTON DE VER MAS TASKS
+export default Pagination;
