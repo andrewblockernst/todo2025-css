@@ -71,7 +71,7 @@ const NotificationItem: React.FC<NotificationItemProps> = ({
     <div
       className={`${getStyles(
         notification.type
-      )} transform transition-all duration-300 ease-in-out animate-slide-in wood-texture`}
+      )} transform transition-all duration-300 ease-in-out animate-slide-in bg-amber-950/95`}
     >
       <div className="flex items-start relative">
         <div className="flex-shrink-0 bg-amber-00/50 rounded-full p-2 border border-amber-400">

@@ -11,6 +11,8 @@ const TaskList: React.FC = () => {
   const listRef = useRef<HTMLUListElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+
+// MANEJO DEL SCROLL SACADO DE INTERNET, VERIFICA SI LA ALTURA ES LA CORRECTA PARA MOSTRAR EL BOTON DE SCROLL
   useEffect(() => {
     const checkScrollable = () => {
       if (listRef.current && containerRef.current) {
