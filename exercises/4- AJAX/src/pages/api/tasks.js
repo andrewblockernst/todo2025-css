@@ -1,49 +1,68 @@
-import { state } from '../../state.js';
+import { state } from "../../state.js";
 
 export const prerender = false;
 
 export async function GET({ url }) {
   const params = new URL(url).searchParams;
-  const tab = params.get('tab') || state.activeTab;
-  const filter = params.get('filter') || state.filter;
-  
+  const tab = params.get("tab") || state.activeTab;
+  const filter = params.get("filter") || state.filter;
+  const page = parseInt(params.get("page") || "1");
+  const limit = parseInt(params.get("limit") || "5");
+
   let tasks = state.tasks[tab] || [];
-  
+
   // Aplicar filtros
-  if (filter === 'complete') {
-    tasks = tasks.filter(task => task.completed);
-  } else if (filter === 'incomplete') {
-    tasks = tasks.filter(task => !task.completed);
+  if (filter === "complete") {
+    tasks = tasks.filter((task) => task.completed);
+  } else if (filter === "incomplete") {
+    tasks = tasks.filter((task) => !task.completed);
   }
-  
-  return new Response(JSON.stringify({ tasks }), {
-    headers: { 'Content-Type': 'application/json' }
-  });
+
+  // Calcular paginación
+  const total = tasks.length;
+  const totalPages = Math.ceil(total / limit);
+  const startIndex = (page - 1) * limit;
+  const endIndex = startIndex + limit;
+  const paginatedTasks = tasks.slice(startIndex, endIndex);
+
+  return new Response(
+    JSON.stringify({
+      tasks: paginatedTasks,
+      total,
+      page,
+      totalPages,
+      hasNextPage: page < totalPages,
+      hasPrevPage: page > 1,
+    }),
+    {
+      headers: { "Content-Type": "application/json" },
+    }
+  );
 }
 
 export async function POST({ request }) {
   const data = await request.json();
   const { text, tab = state.activeTab } = data;
-  
-  if (!text || text.trim() === '') {
-    return new Response(JSON.stringify({ error: 'Task text is required' }), {
+
+  if (!text || text.trim() === "") {
+    return new Response(JSON.stringify({ error: "Task text is required" }), {
       status: 400,
-      headers: { 'Content-Type': 'application/json' }
+      headers: { "Content-Type": "application/json" },
     });
   }
-  
+
   // Crear nueva tarea
   if (!state.tasks[tab]) state.tasks[tab] = [];
-  
+
   const newTask = {
     id: state.nextId++,
     text: text.trim(),
-    completed: false
+    completed: false,
   };
-  
+
   state.tasks[tab].push(newTask);
-  
+
   return new Response(JSON.stringify({ task: newTask }), {
-    headers: { 'Content-Type': 'application/json' }
+    headers: { "Content-Type": "application/json" },
   });
 }
