@@ -6,6 +6,10 @@ import { RouterProvider } from "@tanstack/react-router";
 import "./styles/index.css";
 import { router } from "./router";
 
+
+//CONFIGURATION OF REACT QUERY TO HANDLE DATA FETCHING AND MUTATIONS
+// It sets default options for queries and mutations, including stale time, retry logic, and error handling.
+//IA HELPED ME TO COMPREHEND THIS BETTER
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -23,6 +27,7 @@ const queryClient = new QueryClient({
   },
 });
 
+//RENDERING THE APPLICATION. INSTEAD OF HAVING IT IN THE APP COMPONENT, IT'S NOW IN THE MAIN ENTRY POINT. WITH ALL THE PROVIDERS AND THE ROUTER SETUP.
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

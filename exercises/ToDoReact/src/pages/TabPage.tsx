@@ -17,7 +17,7 @@ const TabPage: React.FC = () => {
   const { setActiveTab } = useClientStore();
   const { data: tabsData, isLoading, error } = useTabs();
 
-  // Set active tab based on URL parameter
+  //ACTIVE TAB BASED ON URL PARAMS
   React.useEffect(() => {
     if (tabId) {
       setActiveTab(tabId);
@@ -32,7 +32,7 @@ const TabPage: React.FC = () => {
     return <ErrorMessage error={error.message} />;
   }
 
-  // Check if the tab exists
+  //DEAR TAB, DO YOU EXIST? SURE YOU DOOOOOO. JK, THIS IS THE CHECK TO SEE IF THE TAB EXISTS.
   const tabExists = tabsData?.tabs.includes(tabId) || false;
 
   if (!tabExists && !isLoading) {

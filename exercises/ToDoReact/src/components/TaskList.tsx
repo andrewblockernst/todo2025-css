@@ -32,14 +32,14 @@ const TaskList: React.FC = () => {
 
   return (
     <div className="bg-amber-950">
-      {/* Task List */}
+      {/*AMOUNT OF TASKS*/}
       <ul className="space-y-2 p-4">
         {data.tasks.map((task) => (
           <TaskItem key={task.id} task={task} />
         ))}
       </ul>
 
-      {/* Pagination Component */}
+      {/*PAGINATION MANAGEMENT*/}
       <Pagination
         currentPage={currentPage}
         totalPages={data.totalPages}

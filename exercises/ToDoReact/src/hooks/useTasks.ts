@@ -105,7 +105,8 @@ export const useTasks = () => {
     queryFn: () => fetchTasks(activeTab, currentPage, filter, itemsPerPage),
     enabled: !!activeTab,
     staleTime: 30 * 1000,
-    refetchInterval: config.taskRefetchInterval * 1000, // Convert seconds to milliseconds
+    //PARTE DEL CODIGO QUE NO TERMINO DE ENTENDER. SI SE QUE HAY UN REFETCH, PERO NO COMPRENDO EL FUNCIONAMIENTO.
+    refetchInterval: config.taskRefetchInterval * 1000, 
   });
 };
 

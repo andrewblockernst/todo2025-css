@@ -1,4 +1,5 @@
 import React from "react";
+import GorgeousButton from "./GorgeousButton";
 
 interface PaginationProps {
   currentPage: number;
@@ -26,25 +27,23 @@ const Pagination: React.FC<PaginationProps> = ({
       )}
 
       <div className="flex gap-2 ml-auto">
-        <button
+        <GorgeousButton
           onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage <= 1}
-          className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
+          disabled={currentPage <= 1}   
         >
           Previous
-        </button>
+        </GorgeousButton>
 
-        <span className="px-3 py-1 bg-amber-600 text-white rounded">
+        <span className="px-2 py-2.5 bg-amber-600 text-white rounded-lg">
           {currentPage} of {totalPages}
         </span>
 
-        <button
+        <GorgeousButton
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="px-3 py-1 bg-amber-800 text-amber-200 rounded disabled:opacity-50 disabled:cursor-not-allowed hover:bg-amber-700"
         >
           Next
-        </button>
+        </GorgeousButton>
       </div>
     </div>
   );

@@ -3,6 +3,7 @@ import { useUpdateTask, useDeleteTask, type Task } from "../hooks/useTasks";
 import { useClientStore } from "../store/clientStore";
 import { useConfigStore } from "../store/configStore";
 import { SquarePen, Trash } from "lucide-react";
+import GorgeousButton from "./GorgeousButton";
 
 interface TaskItemProps {
   task: Task;
@@ -39,14 +40,14 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
     dialogRef.current?.close();
   };
 
-  // Cerrar dialog al hacer clic fuera (en el backdrop)
+  // CLOSING DIALOG WHEN CLICKING OUTSIDE
   const handleDialogClick = (e: React.MouseEvent<HTMLDialogElement>) => {
     if (e.target === e.currentTarget) {
       dialogRef.current?.close();
     }
   };
 
-  // Cerrar dialog con tecla Escape
+  // CLOSING DIALOG WITH ESCAPE KEY
   const handleKeyDown = (e: React.KeyboardEvent<HTMLDialogElement>) => {
     if (e.key === "Escape") {
       dialogRef.current?.close();
@@ -80,7 +81,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           <button
             onClick={handleEdit}
             disabled={isLoading}
-            className="text-amber-300 hover:text-blue-400 transition-colors disabled:opacity-50"
+            className="text-amber-500 hover:text-amber-300 transition-colors"
             aria-label="Edit task"
           >
             <SquarePen className="h-5 w-5 mt-0.5" />
@@ -89,7 +90,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           <button
             onClick={handleDelete}
             disabled={isLoading}
-            className="text-amber-300 hover:text-red-400 transition-colors disabled:opacity-50"
+            className="text-red-500 hover:text-red-300 transition-colors"
             aria-label="Delete task"
           >
             <Trash className="h-5 w-5" />
@@ -97,7 +98,7 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
         </div>
       </li>
 
-      {/* Dialog HTML nativo con estilo pub irlandés */}
+      {/*IRISH DIALOG*/}
       <dialog
         ref={dialogRef}
         onClick={handleDialogClick}
@@ -108,12 +109,11 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
           {/* Header decorativo */}
           <div className="text-center mb-4">
             <div className="inline-flex items-center gap-2 bg-amber-800/30 px-4 py-2 rounded-full border border-amber-400">
-              <span className="text-2xl">🍺</span>
               <h2 className="text-lg font-bold text-amber-200">hey mate!</h2>
             </div>
           </div>
 
-          {/* Contenido */}
+          {/*CONTENT*/}
           <div className="text-center mb-6">
             <p className="text-amber-100 mb-2">
               Sure you want to delete this task?
@@ -126,26 +126,16 @@ const TaskItem: React.FC<TaskItemProps> = ({ task }) => {
             </p>
           </div>
 
-          {/* Botones */}
+          {/*BUTTONS*/}
           <div className="flex gap-3 justify-center">
-            <button
-              onClick={cancelDelete}
-              className="px-4 py-2 bg-amber-800 hover:bg-amber-700 border-2 border-amber-400 text-amber-100 rounded-lg font-medium transition-all duration-200 hover:scale-105"
-            >
-              Cancel
-            </button>
-            <button
+            <GorgeousButton onClick={cancelDelete}>Cancel</GorgeousButton>
+            <GorgeousButton
               onClick={confirmDelete}
               disabled={deleteTaskMutation.isPending}
-              className="px-4 py-2 bg-red-800 hover:bg-red-700 border-2 border-red-400 text-red-100 rounded-lg font-medium transition-all duration-200 hover:scale-105 disabled:opacity-50 disabled:scale-100"
+              variant="red"
             >
               {deleteTaskMutation.isPending ? "Deleting..." : "Delete"}
-            </button>
-          </div>
-
-          {/* Footer decorativo */}
-          <div className="mt-4 text-center">
-            <div className="w-full h-1 bg-gradient-to-r from-amber-600 via-amber-400 to-amber-600 rounded-full opacity-60"></div>
+            </GorgeousButton>
           </div>
         </div>
       </dialog>

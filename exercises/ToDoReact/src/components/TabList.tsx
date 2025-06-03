@@ -38,10 +38,8 @@ const TabList: React.FC<TabListProps> = ({ tabs }) => {
 
   const handleDeleteTab = (tabName: string) => {
     if (tabs.length <= 1) {
-      // Don't allow deleting the last tab
       return;
     }
-
     if (
       confirm(
         `Are you sure you want to delete the "${tabName}" tab? This action cannot be undone.`
@@ -54,7 +52,7 @@ const TabList: React.FC<TabListProps> = ({ tabs }) => {
   return (
     <div className="border-t-2 border-b-2 border-amber-700 p-2">
       <div className="flex overflow-x-auto items-center gap-2">
-        {/* Lista de pestañas existentes */}
+        {/*MAPPING OF ALL THE EXISTING TABS*/}
         <ul className="flex space-x-1">
           {tabs.map((tab) => (
             <li key={tab} className="flex items-center">
@@ -125,12 +123,12 @@ const TabList: React.FC<TabListProps> = ({ tabs }) => {
           </button>
         )}
 
-        {/* Settings Link */}
+        {/*ROUTE TO THE SETTINGS */}
         <Link
           to="/settings"
           className="ml-auto bg-amber-600 hover:bg-amber-700 text-white px-3 py-1 rounded text-sm font-medium whitespace-nowrap"
         >
-          <Bolt/>
+          <Bolt />
         </Link>
       </div>
     </div>

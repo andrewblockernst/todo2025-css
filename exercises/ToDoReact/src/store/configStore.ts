@@ -2,8 +2,8 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export interface AppConfig {
-  taskRefetchInterval: number; // en segundos, por defecto 10
-  uppercaseDescriptions: boolean; // si las descripciones deben estar en mayúsculas
+  taskRefetchInterval: number;
+  uppercaseDescriptions: boolean;
 }
 
 interface ConfigState {
@@ -20,7 +20,7 @@ const defaultConfig: AppConfig = {
 export const useConfigStore = create<ConfigState>()(
   devtools(
     persist(
-      (set, get) => ({
+      (set) => ({
         config: defaultConfig,
 
         setConfig: (newConfig) =>

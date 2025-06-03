@@ -5,6 +5,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import NotificationSystem from "../components/NotificationSystem";
 import { ChevronsLeft } from "lucide-react";
+import GorgeousButton from "../components/GorgeousButton";
 
 const SettingsPage: React.FC = () => {
   const { config, setConfig, resetConfig } = useConfigStore();
@@ -72,7 +73,7 @@ const SettingsPage: React.FC = () => {
               </p>
             </div>
 
-            {/* Uppercase Descriptions */}
+            {/*UPPERCASE TASKS FEATURE*/}
             <div className="bg-amber-900 p-4 rounded-lg">
               <label className="block text-lg font-semibold text-orange-200 mb-2">
                 Task Description Format
@@ -84,6 +85,7 @@ const SettingsPage: React.FC = () => {
                 <input
                   type="checkbox"
                   id="uppercase-toggle"
+                  //TOGGLING THAT CALLS THE CONFIG STORE TO SWITCH BETWEEN UPPERCASE AND NORMAL CASE
                   checked={config.uppercaseDescriptions}
                   onChange={handleUppercaseToggle}
                   className="w-5 h-5 text-orange-600 focus:ring-orange-500 border-orange-300 rounded"
@@ -102,7 +104,7 @@ const SettingsPage: React.FC = () => {
               </p>
             </div>
 
-            {/* Reset Button */}
+            {/*RESTORE INTO FACTORY weeeeeeeee*/}  
             <div className="bg-amber-900 p-4 rounded-lg">
               <h3 className="text-lg font-semibold text-amber-200 mb-2">
                 Reset Settings
@@ -110,12 +112,9 @@ const SettingsPage: React.FC = () => {
               <p className="text-amber-300 text-sm mb-3">
                 Reset all settings to their default values
               </p>
-              <button
-                onClick={handleReset}
-                className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
-              >
+              <GorgeousButton onClick={handleReset} variant="red">
                 Reset to Defaults
-              </button>
+              </GorgeousButton>
             </div>
           </div>
 
